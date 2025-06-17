@@ -3,7 +3,7 @@ Arduino code for stewart platform controller.
 
 ball_balancing - main code for controller to perform autonomous balancing of a ball on the upper platform.
 
-servo-home - code to move the platform to it's home position.
+servo_home - code to move the platform to it's home position.
 
 pixy_calibrate - code used to calibrate location information from the pixy2 camera.
 
