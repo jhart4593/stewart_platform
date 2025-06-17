@@ -90,8 +90,8 @@ float err_prev[2];  // previous error value used to calculate derivative. Deriva
 float d_err[2];       // derivative of the error
 float kp_p = 0.0002;      // proportional constant position
 float kd_p = 0.20;      // derivative constant position
-float kp_o = 0.0010;      // proportional constant orientation
-float kd_o = 0.32;      // derivative constant orientation
+float kp_o = 0.0012;      // proportional constant orientation
+float kd_o = 0.67;      // derivative constant orientation
 float cmd[2];         // output values (commanded position and orientation of platform)
 float time_i;         // initial time
 float time_f;         // final time
@@ -206,7 +206,8 @@ void IK(float pose_des[]){  //calculates servo arm angles given desired pose of 
   //calculate effective leg lengths
   //translation vector of platform frame wrt base frame
   BLA::Matrix<3,1> T_0 = {0,0,h_0};
-  BLA::Matrix<3,1> T = R_PB*T_0;
+  BLA::Matrix<3,1> T_1 = R_PB*T_0;
+  BLA::Matrix<3,1> T = {-(T_1(0)),-(T_1(1)),T_1(2)};
 
   BLA::Matrix<3,1> l1 = T+R_PB*p01-b1;
   BLA::Matrix<3,1> l2 = T+R_PB*p02-b2;
@@ -374,7 +375,8 @@ void controller(){// calculates the PD controller values and moves the servos
     // desired pose of platform based on PD controller output
     //float pose_des[6] = {cmd[0],cmd[1],0,-cmd[2],cmd[3],0};
     //float pose_des[6] = {cmd[0],cmd[1],0,0,0,0};
-    float pose_des[6] = {0,0,0,-(cmd[0]),-(cmd[1]),0};
+    //float pose_des[6] = {0,0,0,-(cmd[0]),-(cmd[1]),0};
+    float pose_des[6] = {0,0,0,cmd[0],cmd[1],0};
 
     Serial.println((String)"sign final cmd: "+pose_des[0]+","+pose_des[1]+","+pose_des[3]+","+pose_des[4]+".");
 
